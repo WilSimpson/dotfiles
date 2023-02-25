@@ -8,8 +8,20 @@ then
     URL="https://github.com/neovim/neovim/releases/download/$NEOVIM_VERSION/nvim.appimage"
 fi
 
+# Install
 curl -LO "$URL"
 chmod u+x nvim.appimage
 ./nvim.appimage --appimage-extract >/dev/null
 mkdir -p /home/gitpod/.local/bin
 ln -s $(pwd)/squashfs-root/AppRun /home/gitpod/.local/bin/nvim
+
+# Setup environment
+CONIG_REPO="https://github.com/WilSimpson/kickstart.nvim.git"
+if test -n "$NEOVIM_CONFIG_REPO"
+then
+    CONFIG_REPO="$NEOVIM_CONFIG_REPO"
+fi
+
+git clone $CONIG_REPO ~/.config/nvim
+
+nvim --headless "+Lazy! sync" +qa
