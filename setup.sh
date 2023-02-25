@@ -1,4 +1,15 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-chmod +x neovim.sh
-/bin/bash neovim.sh
+TMPDIR=$(mktemp -d)
+
+CURRENT=$PWD
+
+cd $TMPDIR
+
+for script in ~/.dotfiles/scripts/*; do
+  bash "$script"
+done
+
+cd $CURRENT
+
+rm -rf $TMPDIR
